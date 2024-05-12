@@ -1,4 +1,3 @@
-// Código para el DTO de creación de administrador en la aplicación de la cadena de hoteles
 import {
   IsEmail,
   IsNotEmpty,

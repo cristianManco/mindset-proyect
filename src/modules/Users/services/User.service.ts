@@ -1,4 +1,3 @@
-// Código para el servicio de administradores en la aplicación de la cadena de hoteles
 import {
   Injectable,
   HttpException,
@@ -16,7 +15,6 @@ export class AdminService {
 
   async create(createAdminDto: CreateAdminDto): Promise<Admin> {
     try {
-      // Verificar si el correo electrónico ya está registrado
       const existingAdmin = await this.model
         .findOne({ email: createAdminDto.email })
         .exec();
@@ -27,7 +25,6 @@ export class AdminService {
         );
       }
 
-      // Crear el nuevo administrador
       const newAdmin = await this.model.create(createAdminDto);
       return await newAdmin;
     } catch (error) {

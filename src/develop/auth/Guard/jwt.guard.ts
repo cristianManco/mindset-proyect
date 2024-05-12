@@ -1,6 +1,7 @@
 import { AuthGuard } from '@nestjs/passport';
 import {
   ExecutionContext,
+  ForbiddenException,
   Injectable,
   Logger,
   UnauthorizedException,
@@ -20,7 +21,32 @@ export class AtGuard extends AuthGuard('jwt') {
       context.getHandler(),
       context.getClass(),
     ]);
-    return isPublic || (await super.canActivate(context));
+
+    if (isPublic) {
+      return true;
+    }
+
+    const canActivate = await super.canActivate(context);
+    if (!canActivate) {
+      return false;
+    }
+
+    const request = context.switchToHttp().getRequest();
+    const user = request.user;
+
+    const validRoles: string[] = this.reflector.get(
+      'roles',
+      context.getHandler(),
+    );
+    if (!validRoles || validRoles.length === 0) {
+      return true;
+    }
+
+    if (validRoles.includes(user.role)) {
+      return true;
+    }
+
+    throw new ForbiddenException(`User need a valid role: ${validRoles}`);
   }
 
   handleRequest(err, user, info: Error) {

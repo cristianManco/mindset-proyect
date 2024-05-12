@@ -25,13 +25,13 @@ export class CoderController {
     return await this.service.create(createCoder);
   }
 
-  @Roles('coder')
+  @Roles('teacher, admin')
   @Get('all')
   async findAll(): Promise<Coder[]> {
     return await this.service.findAll();
   }
 
-  @Roles('coder')
+  @Roles('teacher')
   @Get(':id')
   async findOne(@Param('_id') id: string): Promise<Coder> {
     return await this.service.findOne(id);

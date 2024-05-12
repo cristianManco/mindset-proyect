@@ -1,4 +1,3 @@
-// Código para la aplicación de la cadena de hoteles
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import dbConfig from './develop/persistence/db_config';
@@ -16,9 +15,9 @@ import { CoderModule } from './modules/coders/coder.module';
       load: [dbConfig],
       isGlobal: true,
     }),
+    AuthModule,
     AdminModule,
     CoderModule,
-    AuthModule,
     PersistenceModule,
   ],
   controllers: [],

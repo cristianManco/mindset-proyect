@@ -1,4 +1,3 @@
-// Código para el módulo de administradores en la aplicación de la cadena de hoteles
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Admin, AdminSchema } from './entities/User.entity';

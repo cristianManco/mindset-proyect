@@ -4,6 +4,7 @@ import { HashService } from 'src/develop/shared/hash/hash.service';
 import { AdminService } from 'src/modules/Users/services/User.service';
 import { UserLoginDto, SignUpDto } from '../dtos/export';
 import { Tokens, JwtPayload } from '../types/export';
+import { Admin } from 'src/modules/Users/entities/User.entity';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +13,14 @@ export class AuthService {
     private readonly adminService: AdminService,
     private readonly hashService: HashService,
   ) {}
+
+  async validateUser(payload: JwtPayload) {
+    const user = await this.adminService.findOne(payload.sub.toString());
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
+    }
+    return user;
+  }
 
   async login(loginDto: UserLoginDto): Promise<Tokens> {
     const { email, password } = loginDto;
@@ -24,22 +33,18 @@ export class AuthService {
     return this.getTokens({ sub: user.id });
   }
 
-  async register(signUPDto: SignUpDto): Promise<Tokens> {
+  async register(signUPDto: SignUpDto): Promise<Admin> {
     await this.validateEmailForSignUp(signUPDto.email);
 
     const hashedPassword = await this.hashService.hash(signUPDto.password);
 
     const user = await this.adminService.create({
-      name: signUPDto.name,
-      phone: signUPDto.phone,
-      email: signUPDto.email,
+      ...signUPDto,
       password: hashedPassword,
-      role: signUPDto.role,
     });
 
-    return await this.getTokens({
-      sub: user.id,
-    });
+    await user.save();
+    return user;
   }
 
   async getTokens(jwtPayload: JwtPayload): Promise<Tokens> {

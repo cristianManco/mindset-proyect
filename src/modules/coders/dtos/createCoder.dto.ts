@@ -16,6 +16,4 @@ export class CreateCoderDto {
   @IsNotEmpty()
   @IsString()
   readonly country: string;
-
-  // Otros campos necesarios para la creación de hoteles
 }

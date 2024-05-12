@@ -1,4 +1,3 @@
-// Código para el módulo de persistencia en la aplicación de la cadena de hoteles
 import { Global, Module } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
