@@ -13,7 +13,7 @@ import { Privated } from '../decorators/private.decorator';
         const { db, env } = configService;
         const uriDb =
           env === 'local'
-            ? `mongodb+srv://${db.user}:${db.password}@continental.9suzdf4.mongodb.net/${db.atlas}?retryWrites=true&w=majority&appName=continental`
+            ? `mongodb+srv://${db.user}:${db.password}@camilo.wlx2kje.mongodb.net/${db.atlas}`
             : `${db.connection}${db.host}/${db.name}`;
         return {
           uri: uriDb,
